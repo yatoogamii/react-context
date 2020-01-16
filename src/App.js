@@ -1,18 +1,32 @@
 import React from 'react';
-import Child from './components/Child';
+import ChildClassConsoleLog, {ChildClass, Childfunction} from './components/Child';
+import AppContext, {AppProvider} from "./AppContext";
+import ChildContext from "./components/ChildContext";
+import {ChildProvider} from './components/ChildContext'
 
-const AppContext = React.createContext('light');
-export const AppProvider = AppContext.Provider;
-export const AppConsumer = AppContext.Consumer;
-export default AppContext;
+export default class App extends React.Component {
 
-export class App extends React.Component {
+  static contextType = ChildContext;
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    console.log("affichage du contexte enfant depuis le parent",this.context.valueChild)
+  }
+
   render() {
-    const user = {name: 'test'};
     return (
-      <AppProvider value={user}>
-        <Child />
+      <>
+      <AppProvider value={{valueApp: 'ok pour display le parent'}}>
+        <ChildProvider>
+        <ChildClassConsoleLog />
+        <ChildClass/>
+        <Childfunction/>
+          </ChildProvider>
       </AppProvider>
+        </>
     );
   }
 }
